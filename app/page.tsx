@@ -1,10 +1,9 @@
 "use client";
-import { Button } from "@/components/ui/button";
+import Customizer from "@/components/Customizer";
 import MonacoEditor from "@monaco-editor/react";
 import axios from "axios";
 import { useTheme } from "next-themes";
 import { useState } from "react";
-import * as ts from "typescript";
 
 export default function Home() {
   const { theme } = useTheme();
@@ -42,11 +41,13 @@ export default function Home() {
   };
 
   return (
-    <div className="w-full h-screen flex">
+    <div className="w-full max-h-[calc(100vh-4rem)] flex items-center overflow-hidden flex-col">
+      <Customizer/>
+      <section className="w-full">
       <MonacoEditor
         language="typescript"
         theme={`${theme === "dark" ? "vs-dark" : "light"}`}
-        height="100vh"
+        height="80vh"
         width="50%"
         options={{
           fontSize,
@@ -54,9 +55,10 @@ export default function Home() {
         value={defaultValue}
         onChange={(value) => setCode(value || "")}
       />
-      <div>
+      <div className="w-[50%]">
         <h1 className="text-blue-500">{codeOutput}</h1>
       </div>
+      </section>
     </div>
   );
 }
