@@ -11,7 +11,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Ts Only",
+  title: "Typescript Only",
   description: "Best Typescript Only Compiler , supports only typescript",
 };
 
