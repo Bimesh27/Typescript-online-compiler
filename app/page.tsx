@@ -38,7 +38,7 @@ export default function Home() {
           className="overflow-hidden"
         />
         <div className="w-[50%] p-4">
-          <p>{codeOutput}</p>
+          <p className="whitespace-pre-wrap">{codeOutput}</p>
         </div>
       </section>
     </div>
