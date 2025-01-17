@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/resizable";
 import { useGlobalState } from "@/context/global.context";
 import MonacoEditor from "@monaco-editor/react";
+import axios from "axios";
 import { useTheme } from "next-themes";
 import { useState } from "react";
 
@@ -25,6 +26,35 @@ const ResizablePanelWrapper = () => {
   const [outputFooter, setOutputFooter] = useState<string>("");
   console.log(fontSize);
 
+  const runCode = async () => {
+    try {
+      setIsLoading(true);
+      const response = await axios.post(
+        "https://emkc.org/api/v2/piston/execute",
+        {
+          language: "typescript",
+          version: "*",
+          files: [{ name: "main.ts", content: code }],
+        }
+      );
+
+      const { run } = response.data;
+
+      if (run.stderr) {
+        setCodeOutput(`Error: ${run.stderr}`);
+      } else if (run.stdout) {
+        setCodeOutput(run.stdout);
+        setOutputFooter("== Code Executed Successfully ✨ ==");
+      } else {
+        setCodeOutput("Code executed successfully ✨");
+      }
+    } catch (err) {
+      setCodeOutput(`Error: ${(err as Error).message}`);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="w-full max-h-[calc(100vh-4rem)] flex items-center overflow-hidden flex-col">
       <ResizablePanelGroup
@@ -33,12 +63,9 @@ const ResizablePanelWrapper = () => {
       >
         <ResizablePanel defaultSize={60} minSize={40}>
           <Customizer
-            code={code}
-            setCodeOutput={setCodeOutput}
             CustomiserSide="left"
             isLoading={isLoading}
-            setIsLoading={setIsLoading}
-            setOutputFooter={setOutputFooter}
+            runCode={runCode}
           />
           <MonacoEditor
             language="typescript"
@@ -62,12 +89,9 @@ const ResizablePanelWrapper = () => {
         <ResizableHandle />
         <ResizablePanel defaultSize={40} minSize={25}>
           <Customizer
-            code={code}
-            setCodeOutput={setCodeOutput}
             CustomiserSide={"right"}
             isLoading={isLoading}
-            setIsLoading={setIsLoading}
-            setOutputFooter={setOutputFooter}
+            runCode={runCode}
           />
           <div className="whitespace-pre-wrap p-4">
             <p>{codeOutput} </p>

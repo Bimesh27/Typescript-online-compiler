@@ -1,34 +1,17 @@
-"use client";
-
 import { Loader2, PlayIcon, SquareTerminal } from "lucide-react";
 import { Button } from "./ui/button";
 import { FaCode } from "react-icons/fa";
-import React, { SetStateAction } from "react";
-import { runCode } from "@/actions/code.action";
+import React from "react";
 import { cn } from "@/lib/utils";
 import SelectFontSize from "./SelectFontSize";
 
 interface Props {
-  code: string;
-  setCodeOutput: React.Dispatch<SetStateAction<string>>;
   CustomiserSide: "left" | "right";
   isLoading: boolean;
-  setIsLoading: React.Dispatch<SetStateAction<boolean>>;
-  setOutputFooter: React.Dispatch<SetStateAction<string>>;
+  runCode: () => Promise<void>;
 }
 
-const LeftCustomizer = ({
-  code,
-  setCodeOutput,
-  CustomiserSide,
-  isLoading,
-  setIsLoading,
-  setOutputFooter,
-}: Props) => {
-  const handleRun = () => {
-    runCode({ code, setCodeOutput, setIsLoading, setOutputFooter });
-  };
-
+const LeftCustomizer = ({ CustomiserSide, isLoading, runCode }: Props) => {
   return (
     <div className="w-full h-14 flex">
       <section
@@ -43,11 +26,11 @@ const LeftCustomizer = ({
           </p>
         </div>
 
-        <div className="flex gap-6 w-full">
+        <div className="flex gap-6">
           <SelectFontSize />
           <Button
             className="bg-blue-600 hover:bg-blue-700 transition-all dark:text-white rounded-none"
-            onClick={handleRun}
+            onClick={runCode}
             disabled={isLoading}
           >
             Run
