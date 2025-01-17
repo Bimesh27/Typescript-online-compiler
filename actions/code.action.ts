@@ -1,14 +1,21 @@
-
 import axios from "axios";
 import React from "react";
 
 interface Props {
   code: string;
   setCodeOutput: React.Dispatch<React.SetStateAction<string>>;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  setOutputFooter: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export const runCode = async ({code, setCodeOutput}: Props) => {
+export const runCode = async ({
+  code,
+  setCodeOutput,
+  setIsLoading,
+  setOutputFooter,
+}: Props) => {
   try {
+    setIsLoading(true);
     const response = await axios.post(
       "https://emkc.org/api/v2/piston/execute",
       {
@@ -24,10 +31,13 @@ export const runCode = async ({code, setCodeOutput}: Props) => {
       setCodeOutput(`Error: ${run.stderr}`);
     } else if (run.stdout) {
       setCodeOutput(run.stdout);
+      setOutputFooter("== Code Executed Successfully ✨ ==");
     } else {
-      setCodeOutput("Code executed successfully");
+      setCodeOutput("Code executed successfully ✨");
     }
   } catch (err) {
     setCodeOutput(`Error: ${(err as Error).message}`);
+  } finally {
+    setIsLoading(false);
   }
 };

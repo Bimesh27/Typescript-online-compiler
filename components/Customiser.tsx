@@ -1,20 +1,32 @@
-import { PlayIcon, SquareTerminal } from "lucide-react";
+"use client";
+
+import { Loader2, PlayIcon, SquareTerminal } from "lucide-react";
 import { Button } from "./ui/button";
-import { Separator } from "./ui/separator";
 import { FaCode } from "react-icons/fa";
 import React, { SetStateAction } from "react";
 import { runCode } from "@/actions/code.action";
 import { cn } from "@/lib/utils";
+import SelectFontSize from "./SelectFontSize";
 
 interface Props {
   code: string;
   setCodeOutput: React.Dispatch<SetStateAction<string>>;
   CustomiserSide: "left" | "right";
+  isLoading: boolean;
+  setIsLoading: React.Dispatch<SetStateAction<boolean>>;
+  setOutputFooter: React.Dispatch<SetStateAction<string>>;
 }
 
-const LeftCustomizer = ({ code, setCodeOutput, CustomiserSide }: Props) => {
+const LeftCustomizer = ({
+  code,
+  setCodeOutput,
+  CustomiserSide,
+  isLoading,
+  setIsLoading,
+  setOutputFooter,
+}: Props) => {
   const handleRun = () => {
-    runCode({ code, setCodeOutput });
+    runCode({ code, setCodeOutput, setIsLoading, setOutputFooter });
   };
 
   return (
@@ -30,14 +42,19 @@ const LeftCustomizer = ({ code, setCodeOutput, CustomiserSide }: Props) => {
             Code <FaCode className="mt-[2px] text-blue-500 text-2xl" />
           </p>
         </div>
-        <Button
-          className="bg-blue-600 hover:bg-blue-700 transition-all dark:text-white"
-          onClick={handleRun}
-        >
-          Run <PlayIcon />
-        </Button>
+
+        <div className="flex gap-6 w-full">
+          <SelectFontSize />
+          <Button
+            className="bg-blue-600 hover:bg-blue-700 transition-all dark:text-white rounded-none"
+            onClick={handleRun}
+            disabled={isLoading}
+          >
+            Run
+            {!isLoading ? <PlayIcon /> : <Loader2 className="animate-spin" />}
+          </Button>
+        </div>
       </section>
-      <Separator orientation="vertical" className="" />
       <section
         className={cn(
           "flex-1 border-b w-full flex items-center px-10",
