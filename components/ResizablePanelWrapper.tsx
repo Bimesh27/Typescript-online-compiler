@@ -11,7 +11,7 @@ import { getFromLocalStorage, setLocalStorage } from "@/lib/localStorageUtils";
 import MonacoEditor from "@monaco-editor/react";
 import axios from "axios";
 import { useTheme } from "next-themes";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const ResizablePanelWrapper = () => {
   const { theme } = useTheme();
@@ -55,6 +55,10 @@ const ResizablePanelWrapper = () => {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    setCode(getFromLocalStorage("default-value") || defaultValue);
+  },[])
 
   return (
     <div className="w-full max-h-[calc(100vh-4rem)] flex items-center overflow-hidden flex-col">
