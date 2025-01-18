@@ -7,6 +7,7 @@ import {
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
 import { useGlobalState } from "@/context/global.context";
+import { getFromLocalStorage, setLocalStorage } from "@/lib/localStorageUtils";
 import MonacoEditor from "@monaco-editor/react";
 import axios from "axios";
 import { useTheme } from "next-themes";
@@ -72,8 +73,8 @@ const ResizablePanelWrapper = () => {
             theme={`${theme === "dark" ? "vs-dark" : "light"}`}
             height="80vh"
             options={{
-              fontSize: Number(localStorage.getItem("font-size")) || fontSize,
-              fontFamily: localStorage.getItem("font-style") || "Fira Code",
+              fontSize: getFromLocalStorage("font-size") || fontSize,
+              fontFamily: getFromLocalStorage("font-style") || "Fira Code",
               fontLigatures: true,
               minimap: {
                 enabled: false,
@@ -83,11 +84,11 @@ const ResizablePanelWrapper = () => {
                 horizontalScrollbarSize: 10,
               },
             }}
-            value={localStorage.getItem("default-value") || defaultValue}
+            value={getFromLocalStorage("default-value") || defaultValue}
             onChange={(value) => {
               setCode(value || "");
               setDefaultValue(value || "");
-              localStorage.setItem("default-value", value || "");
+              setLocalStorage("default-value", value || "");
             }}
             className="overflow-hidden"
           />

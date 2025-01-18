@@ -7,6 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { getFromLocalStorage, setLocalStorage } from "@/lib/localStorageUtils";
 
 // Replace with your actual library
 const FontSizeSelector: React.FC = () => {
@@ -15,10 +16,10 @@ const FontSizeSelector: React.FC = () => {
 
   return (
     <Select
-      defaultValue={localStorage.getItem("font-size") || fontSize.toString()}
+      defaultValue={getFromLocalStorage("font-size") || fontSize.toString()}
       onValueChange={(value) => {
         setFontSize(Number(value));
-        localStorage.setItem("font-size", value);
+        setLocalStorage("font-size", value);
       }}
     >
       <SelectTrigger className="w-[110px]">

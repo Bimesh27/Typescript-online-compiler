@@ -7,6 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { getFromLocalStorage, setLocalStorage } from "@/lib/localStorageUtils";
 
 const SelectFontFamily = () => {
   const { font, setFont } = useGlobalState();
@@ -24,10 +25,10 @@ const SelectFontFamily = () => {
 
   return (
     <Select
-      defaultValue={localStorage.getItem("font-style") || font}
+      defaultValue={getFromLocalStorage("font-style") || font}
       onValueChange={(value) => {
         setFont(value);
-        localStorage.setItem("font-style", value);
+        setLocalStorage("font-style", value);
       }}
     >
       <SelectTrigger className="w-[110px]">
