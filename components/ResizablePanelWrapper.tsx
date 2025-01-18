@@ -15,7 +15,7 @@ import { useState } from "react";
 const ResizablePanelWrapper = () => {
   const { theme } = useTheme();
 
-  const { fontSize, font } = useGlobalState();
+  const { fontSize } = useGlobalState();
 
   const [defaultValue, setDefaultValue] = useState(
     "const helloMom = () => {\n \tconsole.log('Hello Mom');\n} \n \nhelloMom()"
