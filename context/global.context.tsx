@@ -4,6 +4,8 @@ import React, { createContext, useState } from "react";
 interface GlobalStateProps {
   fontSize: number;
   setFontSize: React.Dispatch<React.SetStateAction<number>>;
+  font: string;
+  setFont: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export const GlobalStateContext = createContext<GlobalStateProps | undefined>(
@@ -16,9 +18,10 @@ export const GlobalStateProvider = ({
   children: React.ReactNode;
 }) => {
   const [fontSize, setFontSize] = useState<number>(20);
+  const [font, setFont] = useState("Fira Code");
 
   return (
-    <GlobalStateContext.Provider value={{ fontSize, setFontSize }}>
+    <GlobalStateContext.Provider value={{ fontSize, setFontSize, font, setFont }}>
       {children}
     </GlobalStateContext.Provider>
   );

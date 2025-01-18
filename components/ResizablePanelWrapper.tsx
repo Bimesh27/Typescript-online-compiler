@@ -15,16 +15,16 @@ import { useState } from "react";
 const ResizablePanelWrapper = () => {
   const { theme } = useTheme();
 
-  const { fontSize } = useGlobalState();
+  const { fontSize, font } = useGlobalState();
 
-  const defaultValue =
-    "const helloMom = () => {\n \tconsole.log('Hello Mom');\n} \n \nhelloMom()";
+  const [defaultValue, setDefaultValue] = useState(
+    "const helloMom = () => {\n \tconsole.log('Hello Mom');\n} \n \nhelloMom()"
+  );
 
   const [code, setCode] = useState<string>(defaultValue);
   const [codeOutput, setCodeOutput] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [outputFooter, setOutputFooter] = useState<string>("");
-  console.log(fontSize);
 
   const runCode = async () => {
     try {
@@ -73,6 +73,8 @@ const ResizablePanelWrapper = () => {
             height="80vh"
             options={{
               fontSize: Number(localStorage.getItem("font-size")) || fontSize,
+              fontFamily: localStorage.getItem("font-style") || "Fira Code",
+              fontLigatures: true,
               minimap: {
                 enabled: false,
               },
@@ -81,8 +83,12 @@ const ResizablePanelWrapper = () => {
                 horizontalScrollbarSize: 10,
               },
             }}
-            value={defaultValue}
-            onChange={(value) => setCode(value || "")}
+            value={localStorage.getItem("default-value") || defaultValue}
+            onChange={(value) => {
+              setCode(value || "");
+              setDefaultValue(value || "");
+              localStorage.setItem("default-value", value || "");
+            }}
             className="overflow-hidden"
           />
         </ResizablePanel>

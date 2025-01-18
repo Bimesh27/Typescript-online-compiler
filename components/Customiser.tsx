@@ -4,6 +4,7 @@ import { FaCode } from "react-icons/fa";
 import React from "react";
 import { cn } from "@/lib/utils";
 import SelectFontSize from "./SelectFontSize";
+import SelectFontFamily from "./SelectFontFamily";
 
 interface Props {
   CustomiserSide: "left" | "right";
@@ -27,6 +28,7 @@ const LeftCustomizer = ({ CustomiserSide, isLoading, runCode }: Props) => {
         </div>
 
         <div className="flex gap-6">
+          <SelectFontFamily />
           <SelectFontSize />
           <Button
             className="bg-blue-600 hover:bg-blue-700 transition-all dark:text-white rounded-none"
